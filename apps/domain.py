@@ -1,7 +1,8 @@
-from os import system  # Импорт функции system для ввода команды в shell системы
-from apps.config import command  # Импорт команды для получания домена
+from os import system            # Импортируем функцию system из модуля os, для ввода команды в shell
+from apps.config import command  # Импортируем команду для получения url
+from asyncio import to_thread    # Импортируем функцию для создания отдельного потока для system
 
 
-def get_domain():
-    """Функция для ввода команды"""
-    system(command)
+async def get_domain():
+    """Асинхронная функция для вызова синхронной функции system с аргументом command в отдельном потоке"""
+    await to_thread(system, command)

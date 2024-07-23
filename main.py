@@ -1,24 +1,19 @@
-from multiprocessing import Process  # Импортируем класс Process из модуля multiprocessing для запуска нескольких процесоов
-from apps.server import start_server  # Импортируем функцию start_server из модуля apps.server для запуска сервера
-from apps.domain import get_domain  # Импортируем функцию get_domain из модуля apps.domain для запуска домена сервера
+from asyncio import create_task, gather, run  # Библиотека для асинхронного программмирования
+from apps.server import start_server  # Функция для запуска сервера Flask
+from apps.domain import get_domain  # Функция для получения домена
 
 
-def main():
-    # Создаем два отдельных процесса
-    p1 = Process(target=get_domain)  # Процесс p1 будет запускать функцию get_domain
-    p2 = Process(target=start_server)  # Процесс p2 будет запускать функцию start_server
-
-    # Запускаем оба процесса
-    p1.start()
-    p2.start()
-
-    # Ожидаем завершения обоих процессов
-    p1.join()
-    p2.join()
+async def main():
+    """Главная функция программы"""
+    domain = create_task(get_domain())  # Запуск функции get_domain как процесс
+    server = create_task(start_server())  # Запуск функции start_server как процесс (оба процесса работают параллельно)
+    await gather(domain, server)  # Ожидание завершения процессов
 
 
-if __name__ == '__main__':  # Это основная точка входа в скрипт
+if __name__ == '__main__':  # Точка входа в программу
     try:
-        main()  # Вызываем функцию main
-    except KeyboardInterrupt:
-        print("Exit")  # Печатаем "Exit" если скрипт был прерван с помощью Ctrl+C
+        run(main())  # Асинхронный запуск функции main()
+    except KeyboardInterrupt:  # Исключение KeyboardInterrupt
+        print("Exit")  # Печатает "Exit" при завершении программы через ^C
+    except Exception as e:  # Обработчик всех ошибок
+        print(f"Error: {e}")
