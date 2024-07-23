@@ -64,7 +64,7 @@ def log_client_info(client_info):
             dump(client_info, f, indent=4)
             f.write("\n")
         else:
-            f.write(f"[ * ] {get_current_time()}    {client_info['ip_info']["ip"]}\n")
+            f.write(f"[ * ] {get_current_time()}    {client_info['ip_info']['ip']}\n")
 
 
 @app.route("/")
