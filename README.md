@@ -20,7 +20,7 @@ start_server запускает flask сервер на том же порту �
 ```bash
 git clone https://github.com/VorPijakov23/Flask_get_ip.git
 
-cd Flask_get_ip/install_scripts
+cd Flask_get_ip/
 ```
 ### Запуск скрипта для подготовки к работе
 
